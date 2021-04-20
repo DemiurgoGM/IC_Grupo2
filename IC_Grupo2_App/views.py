@@ -17,7 +17,6 @@ def send(request):
     enderecos_untreated = request.POST.get('enderecos')
     enderecos_list = enderecos_untreated.split(';')
     enderecos_list = [x.strip() for x in enderecos_list if x]
-    print(enderecos_list)
     for file in request.FILES['files']:
         # TODO usar file recebido
         pass
