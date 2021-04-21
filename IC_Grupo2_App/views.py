@@ -15,27 +15,36 @@ def send(request):
         return redirect('IC_Grupo2_HomePage')
 
     enderecos_untreated = request.POST.get('enderecos')
-    enderecos_list = enderecos_untreated.split(';')
-    enderecos_list = [x.strip() for x in enderecos_list if x]
+    enderecos_list = None
+    if enderecos_untreated:
+        enderecos_list = enderecos_untreated.split(';')
+        enderecos_list = [x.strip() for x in enderecos_list if x and x.strip()]
+    if not enderecos_list:
+        # TODO sem endereco
+        pass
     for file in request.FILES['files']:
-        # TODO usar file recebido
+        # TODO usar file(s) (podem ser múltiplos) recebido(s)
         pass
 
-    # Como responder com um csv:
+    # Testes para envio:
+
+    # Como responder com um csv: - Sem teste
     # response = HttpResponse(file, headers={
     #     'Content-Type': 'text/csv',
     #     'Content-Disposition': 'attachment; filename="foo.csv"',
     # })
 
-    # Como responder com um zip:
+    # Como responder com um zip: - Sem teste
     # response = HttpResponse(file, headers={
     #     'Content-Type': 'application/zip',
     #     'Content-Disposition': 'attachment; filename="foo.zip"',
     # })
 
-    file = None
+    # Como responder com um pdf: - Funcional
+    file = request.FILES['files']
     response = HttpResponse(file, headers={
-        'Content-Type': 'application / vnd.openxmlformats - officedocument.presentationml.presentation',
-        'Content-Disposition': 'attachment; filename="foo.pptx"',
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': 'attachment; filename="foo.pdf"',
     })
+
     return response
