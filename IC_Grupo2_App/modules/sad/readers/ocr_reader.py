@@ -3,9 +3,9 @@ from pikepdf import Pdf, PdfImage
 
 class OCRDocumentReader(DocumentReader):
   
-  def read_document(self, path):
-    pdf = Pdf.open(path)
-
+  def read_document(self, file):
+    pdf = Pdf.open(file)
+    print(pdf)
     document = pdf.pages[0]
 
     (name, raw_image) = next(document.images.items())

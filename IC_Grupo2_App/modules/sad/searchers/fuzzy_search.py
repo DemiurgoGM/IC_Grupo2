@@ -4,8 +4,8 @@ from fuzzywuzzy import process
 
 class FuzzySearch:
 
-  def __init__(self, database_path):
-    self.contents = pd.read_excel(database_path)
+  def __init__(self):
+    self.contents = pd.read_excel(r'/code/IC_Grupo2_App/modules/sad/database/enderecos.xlsx')
  
   def for_address(self, column, address):
     matches = process.extract(address, self.contents[column], limit=5, scorer=fuzz.token_sort_ratio)

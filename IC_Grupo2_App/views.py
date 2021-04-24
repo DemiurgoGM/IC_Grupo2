@@ -1,8 +1,13 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from django.conf import settings
 
+import os
 
-# Create your views here.
+from .modules.sad.factory import ApplicationFactory
+
 def home(request):
     context = {
         'title': 'HomePage',
@@ -14,37 +19,17 @@ def send(request):
     if request.method == 'GET':
         return redirect('IC_Grupo2_HomePage')
 
-    enderecos_untreated = request.POST.get('enderecos')
-    enderecos_list = None
-    if enderecos_untreated:
-        enderecos_list = enderecos_untreated.split(';')
-        enderecos_list = [x.strip() for x in enderecos_list if x and x.strip()]
-    if not enderecos_list:
-        # TODO sem endereco
-        pass
-    for file in request.FILES['files']:
-        # TODO usar file(s) (podem ser múltiplos) recebido(s)
-        pass
+    endereco = request.POST.get('endereco')
+    input_file = request.FILES['file']
+    
+    path = default_storage.save('tmp/input_file.pdf', ContentFile(input_file.read()))
+    tmp_file = os.path.join(settings.MEDIA_ROOT, path)
+ 
+    highlighted_pdf, csv = ApplicationFactory().get_application_instance(tmp_file, endereco).run()
 
-    # Testes para envio:
-
-    # Como responder com um csv: - Sem teste
-    # response = HttpResponse(file, headers={
-    #     'Content-Type': 'text/csv',
-    #     'Content-Disposition': 'attachment; filename="foo.csv"',
-    # })
-
-    # Como responder com um zip: - Sem teste
     # response = HttpResponse(file, headers={
     #     'Content-Type': 'application/zip',
     #     'Content-Disposition': 'attachment; filename="foo.zip"',
     # })
-
-    # Como responder com um pdf: - Funcional
-    file = request.FILES['files']
-    response = HttpResponse(file, headers={
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename="foo.pdf"',
-    })
 
     return response

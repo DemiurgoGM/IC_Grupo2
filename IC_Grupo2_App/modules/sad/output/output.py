@@ -1,3 +1,4 @@
+import os
 import fitz
 import pandas as pd
 
@@ -17,7 +18,7 @@ class Output:
                 highlight = page.addHighlightAnnot(inst)
 
     if save_document:
-      doc.save(self.get_output_file_name(path, "pdf"), garbage=4, deflate=True, clean=True)
+      return doc.save(self.get_output_file_name(path, "pdf"), garbage=4, deflate=True, clean=True)
   
   def generate_csv(self, input_file_path, office_no, process_no, subject, originator, addresses):
     df = pd.DataFrame()
@@ -33,7 +34,7 @@ class Output:
 
       df = df.append(data, ignore_index=True)
 
-    df.to_csv(self.get_output_file_name(input_file_path, "csv"), index = False)
+    return df.to_csv(self.get_output_file_name(input_file_path, "csv"), index = False)
 
   def get_output_file_name(self, path, extension):
     file = path.split(os.path.sep)[-1]
