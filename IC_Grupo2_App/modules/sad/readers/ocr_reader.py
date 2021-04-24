@@ -1,4 +1,4 @@
-import DocumentReader
+from .reader import DocumentReader
 from pikepdf import Pdf, PdfImage
 
 class OCRDocumentReader(DocumentReader):

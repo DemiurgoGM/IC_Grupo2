@@ -1,4 +1,4 @@
-import DocumentReader
+from .reader import DocumentReader
 import fitz
 
 class SimpleDocumentReader(DocumentReader):

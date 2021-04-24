@@ -1,5 +1,6 @@
 from extractors.information_extractor import InformationExtractor
 from helpers.directory import Directory
+from readers.reader import DocumentReader
 from readers.ocr_reader import OCRDocumentReader
 from readers.simple_reader import SimpleDocumentReader
 from output.output import Output
@@ -33,6 +34,3 @@ class Application:
   
   def should_try_ocr(self, extracted_information:[str]):
     return all(information is "" for information in extracted_information)
-
-obj = InformationExtractor()
-print(obj.search_pattern("123/1234"))
