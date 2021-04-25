@@ -7,7 +7,7 @@ WORKDIR /code
 
 COPY requirements.txt /code/
 
-RUN apt-get update && apt-get install ffmpeg libsm6 libxext6 python3-opencv -y
-RUN pip install -r requirements.txt
+RUN apt-get update && apt-get install python3-opencv -y
+RUN pip install -r requirements.txt &&  pip install pymupdf
 
 COPY . /code/
