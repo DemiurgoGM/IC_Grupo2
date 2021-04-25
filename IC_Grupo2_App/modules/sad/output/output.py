@@ -2,6 +2,10 @@ import os
 import fitz
 import pandas as pd
 
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from django.conf import settings
+
 class Output:
   
   def generate_highlighted_pdf(self, path, to_highlight):
@@ -18,7 +22,9 @@ class Output:
                 highlight = page.addHighlightAnnot(inst)
 
     if save_document:
-      return doc.save(self.get_output_file_name(path, "pdf"), garbage=4, deflate=True, clean=True)
+      path = default_storage.save('tmp/highlighted.pdf', ContentFile(""))
+
+      return doc.save('tmp/highlighted.pdf', garbage=4, deflate=True, clean=True)
   
   def generate_csv(self, input_file_path, office_no, process_no, subject, originator, addresses):
     df = pd.DataFrame()
@@ -34,12 +40,5 @@ class Output:
 
       df = df.append(data, ignore_index=True)
 
-    return df.to_csv(self.get_output_file_name(input_file_path, "csv"), index = False)
-
-  def get_output_file_name(self, path, extension):
-    file = path.split(os.path.sep)[-1]
-
-    filename = file.split(".")[0]
-    directory = "/".join(path.split(os.path.sep)[:-2])
-
-    return directory + "/output/" + filename + "." + extension
+    path = default_storage.save('tmp/extracted_data.csv', ContentFile(""))
+    return df.to_csv('tmp/extracted_data.csv', index = False)
