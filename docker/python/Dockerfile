@@ -7,7 +7,8 @@ WORKDIR /code
 
 COPY requirements.txt /code/
 
-RUN apt-get update && apt-get install python3-opencv -y
-RUN pip install -r requirements.txt &&  pip install pymupdf
+RUN apt-get update
+RUN apt-get install python3-opencv tesseract-ocr -y
+RUN pip install -r requirements.txt 
 
 COPY . /code/
