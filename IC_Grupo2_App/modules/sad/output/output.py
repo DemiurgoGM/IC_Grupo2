@@ -10,7 +10,6 @@ class Output:
   
   def generate_highlighted_pdf(self, path, to_highlight):
     doc = fitz.open(path)
-    save_document = False
     
     for page in doc:
         for text in to_highlight:
@@ -18,13 +17,11 @@ class Output:
           
           if text_instances is not None:
             for inst in text_instances:
-                save_document = True
                 highlight = page.addHighlightAnnot(inst)
 
-    if save_document:
-      path = default_storage.save('tmp/highlighted.pdf', ContentFile(""))
+    path = default_storage.save('tmp/highlighted.pdf', ContentFile(""))
 
-      return doc.save('tmp/highlighted.pdf', garbage=4, deflate=True, clean=True)
+    return doc.save('tmp/highlighted.pdf', garbage=4, deflate=True, clean=True)
   
   def generate_csv(self, input_file_path, office_no, process_no, subject, originator, addresses):
     df = pd.DataFrame()
