@@ -1,6 +1,8 @@
 from .reader import DocumentReader
 from pikepdf import Pdf, PdfImage
 
+import pytesseract
+
 class OCRDocumentReader(DocumentReader):
   
   def read_document(self, file):
